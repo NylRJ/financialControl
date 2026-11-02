@@ -96,3 +96,9 @@ O teste do domínio financeiro não precisa de conexão Firebase. **Não execute
 ## Privacidade e GitHub
 
 Não versionar `.env`, credenciais privadas, extratos reais ou planilhas financeiras pessoais. O código pode estar em repositório público **porque os exemplos são sintéticos**, enquanto os dados reais ficam protegidos em Firestore (desde que as regras sejam publicadas corretamente).
+
+## Sprint 02 — fluxo guiado e contas (branch de implementação)
+
+A proposta AF-001/AF-002 introduz apresentação inicial, onboarding para usuário autenticado com base vazia, módulo Contas e Carteiras e composição de patrimônio consultável. Em movimentações, a falta de conta tem explicação e cadastro rápido sem perder o preenchimento. Veja `docs/SPRINT02-UX-ACCOUNTS.md` para critérios de aceite e pendências.
+
+A versão no Firebase Hosting **não muda automaticamente** quando a branch recebe um commit. Antes de publicar, execute `npm install`, `npm run test`, `npm run typecheck`, `npm run build` e os testes de autenticação/persistência com dados de teste. Não importe demonstração para uma base contendo movimentos reais.

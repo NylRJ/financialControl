@@ -1,0 +1,12 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {accountNameError,onboardingStep} from './onboarding.ts';
+import type {Account,FinanceData,Movement} from './types.ts';
+const a:Account={id:'acc',name:'Caixa da Feira',purpose:'Feira',type:'Dinheiro físico'};
+const blank=():FinanceData=>({accounts:[],assets:[],movements:[],quotes:[],goals:[]});
+const mv=(kind:Movement['kind']):Movement=>({id:kind,date:'2026-11-02',description:kind,accountId:'acc',amount:100,kind});
+test('base vazia exige uma conta antes do lançamento',()=>{assert.equal(onboardingStep(blank(),false),'account');});
+test('após criar conta, saldo inicial é opcional',()=>{const d=blank();d.accounts=[a];assert.equal(onboardingStep(d,false),'opening');assert.equal(onboardingStep(d,true),'income');});
+test('saldo inicial nunca conta como receita',()=>{const d=blank();d.accounts=[a];d.movements=[mv('openingBalance')];assert.equal(onboardingStep(d,false),'income');});
+test('primeira receita conclui a jornada',()=>{const d=blank();d.accounts=[a];d.movements=[mv('income')];assert.equal(onboardingStep(d,false),'complete');});
+test('nomes de conta vazios e duplicados são recusados',()=>{assert.match(accountNameError('  ',[a])??'',/nome/);assert.match(accountNameError('  caixa DA feira  ',[a])??'',/existe/);assert.equal(accountNameError('Caixa da Feira',[a],'acc'),null);assert.equal(accountNameError('Nubank',[a]),null);});
