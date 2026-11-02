@@ -1,0 +1,20 @@
+name: CI React + Firebase
+on:
+  push:
+    paths: ["atlas-financeiro/**"]
+  pull_request:
+    paths: ["atlas-financeiro/**"]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: atlas-financeiro
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run test
+      - run: npm run build
